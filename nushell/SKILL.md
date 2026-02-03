@@ -15,6 +15,7 @@ description: Provides essential patterns, idioms, and gotchas for Nushell code. 
 - Pipeline input (`$in`) is not a positional parameter; use type signatures to declare pipeline input.
 - Row conditions are shorthand for simple field comparisons; use closures for reusable or complex logic.
 - `let-env` has been removed from Nushell; set env vars with `$env.VAR = "value"` (or use `with-env` for scoped changes).
+- Multiline works inside delimiters (parentheses, brackets, braces). A bare newline between a command and required args breaks parsing; wrap the command in parentheses or keep it on one line.
 
 ## Built-ins First
 Default to Nushell commands before external tools.

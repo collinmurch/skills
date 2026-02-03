@@ -38,3 +38,22 @@ if ($list | is-empty) { ... }
 
 $list | default -e $val_if_empty
 ```
+
+## Multiline Commands
+
+Commands do not implicitly continue across lines. Multiline only works inside delimiters such as parentheses, brackets, or braces.
+
+```nu
+# Wrong: newline splits the command from required args
+http post
+  "https://example.com"
+  {version: "latest"}
+
+# Correct: wrap the command in parentheses
+(http post
+  "https://example.com"
+  {version: "latest"})
+
+# Also correct: keep it on one line
+http post "https://example.com" {version: "latest"}
+```
