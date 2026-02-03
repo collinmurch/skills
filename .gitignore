@@ -2,7 +2,7 @@
 !.gitignore
 !README.md
 
-nushell
+!nushell
 !nushell/**
 !mermaid-diagrams
 !mermaid-diagrams/**
