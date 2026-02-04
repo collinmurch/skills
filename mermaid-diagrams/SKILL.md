@@ -1,6 +1,6 @@
 ---
 name: mermaid-diagrams
-description: Comprehensive guide for creating software diagrams using Mermaid syntax. Use when users need to create, visualize, or document software through diagrams including class diagrams (domain modeling, object-oriented design), sequence diagrams (application flows, API interactions, code execution), flowcharts (processes, algorithms, user journeys), entity relationship diagrams (database schemas), C4 architecture diagrams (system context, containers, components), state diagrams, git graphs, pie charts, gantt charts, or any other diagram type. Triggers include requests to "diagram", "visualize", "model", "map out", "show the flow", or when explaining system architecture, database design, code structure, or user/application flows.
+description: Create software diagrams with Mermaid. Use when users ask to diagram or visualize flows, architecture, schemas, or code structure (class, sequence, flowchart, ERD, C4, state, git graph, gantt, pie/bar).
 ---
 
 # Mermaid Diagramming
@@ -145,11 +145,17 @@ For in-depth guidance on specific diagram types, see:
 - **[references/architecture-diagrams.md](references/architecture-diagrams.md)** - Cloud services, infrastructure, CI/CD deployments
 - **[references/advanced-features.md](references/advanced-features.md)** - Themes, styling, configuration, layout options
 
+## Output Format
+
+- Provide a single Mermaid code block for the final diagram.
+- List generated files as a short bullet list.
+- Keep explanation to 3 bullets max, focused on key choices or assumptions.
+
 ## Best Practices
 
 1. **Start Simple** - Begin with core entities/components, add details incrementally
 2. **Use Meaningful Names** - Clear labels make diagrams self-documenting
-3. **Comment Extensively** - Use `%%` comments to explain complex relationships
+3. **Comment Sparingly** - Use `%%` comments only for complex or non-obvious relationships
 4. **Keep Focused** - One diagram per concept; split large diagrams into multiple focused views
 5. **Version Control** - Store `.mmd` files alongside code for easy updates
 6. **Add Context** - Include titles and notes to explain diagram purpose
@@ -163,6 +169,7 @@ Configure diagrams using frontmatter:
 ---
 config:
   theme: base
+  look: handDrawn
   themeVariables:
     primaryColor: "#ff6b6b"
 ---
@@ -186,11 +193,11 @@ flowchart LR
 2. Generate a `.png` with the CLI (file-based).
 
 **File-based:**
-`mmdc -i diagram.mmd -o diagram.png`
+`mmdc -i diagram.mmd -o diagram.png -s 5 -b transparent`
 
 **Direct creation (stdin):**
 If the user asks to create the diagram directly without writing a file, use stdin. This can be less reliable than file-based usage and may trigger headless Chromium.
-`mmdc -i - -o diagram.png`
+`mmdc -i - -o diagram.png -s 5 -b transparent`
 
 ## Common Pitfalls
 
@@ -201,8 +208,8 @@ If the user asks to create the diagram directly without writing a file, use stdi
 
 ## Default Behavior
 
-- **Always** create the diagram: write a `.mmd` file and generate a `.png` with the CLI unless the user only wants the Mermaid text.
+- **Always** create the diagram: write a `.mmd` file and generate a `.png` with the CLI unless the user explicitly asks for Mermaid text only.
 - Use `look: handDrawn` by default in the diagram config.
-- Use `-s 5` by default when using the CLI to scale up by a factor of 5. 
+- Use `-s 5` and `-b transparent` by default when using the CLI.
 - Do not pre-check for CLI presence. Run the command directly; if it errors due to a missing CLI, then prompt installation with: `npm install -g @mermaid-js/mermaid-cli`.
 - Prefer file-based input; only use stdin if explicitly requested.

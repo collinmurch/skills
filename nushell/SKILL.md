@@ -1,35 +1,44 @@
 ---
 name: nushell
-description: Provides essential patterns, idioms, and gotchas for Nushell code. Triggers when writing Nushell scripts, functions, modules, pipelines, or working with Nushell's type system and data structures. Complements plugin-development knowledge with practical usage patterns.
+description: Idiomatic Nushell usage for pipelines, scripts, modules, data transforms, HTTP, and type signatures. Use when the user asks for Nushell/nu commands or pipelines, or when writing Nushell code.
 ---
 
 # Nushell
 
-## Focus
-- Write idiomatic pipelines over structured data.
-- Declare command input and output types explicitly for public commands.
-- Handle nullability and errors explicitly.
-- Prefer Nushell built-ins; use external tools only when they are clearly faster or required.
+## Scope and Output
+- Prefer idiomatic Nushell pipelines over external tools.
+- Do only what the user asked; avoid extra features or extra commands.
+- Keep responses concise and task-focused.
+- If the user asks for a command, return a single Nushell command by default.
+- When multiple approaches exist, present one default and add one alternative only if it materially changes the outcome.
+- If requirements are ambiguous, ask up to 3 clarifying questions or state assumptions explicitly.
 
-## Critical Distinctions
-- Pipeline input (`$in`) is not a positional parameter; use type signatures to declare pipeline input.
-- Row conditions are shorthand for simple field comparisons; use closures for reusable or complex logic.
-- `let-env` has been removed from Nushell; set env vars with `$env.VAR = "value"` (or use `with-env` for scoped changes).
-- Multiline works inside delimiters (parentheses, brackets, braces). A bare newline between a command and required args breaks parsing; wrap the command in parentheses or keep it on one line.
+## Rules
+- Treat pipeline input (`$in`) as data, not a positional parameter; declare input and output types for public commands.
+- Use row conditions only for simple comparisons; use closures for complex predicates.
+- Use `describe` to confirm shapes when unsure.
+- Handle nulls explicitly with `default`, `is-empty`, `is-not-empty`, or `if`.
+- Use `try`/`catch` when commands can fail; return a clear error or fallback.
+- Do not assume external tools are installed; state requirements or provide a Nushell-native fallback.
+- Prefix external tools with `^` and explain why they are required.
 
-## Built-ins First
-Default to Nushell commands before external tools.
+# Built-ins First
 - HTTP: use `http get|post|put|patch|delete` instead of `curl`.
-- Files: use `open`, `save`, `ls`, `rm`, `mv`, `cp`, and `glob` before external equivalents.
+- Files: use `open`, `save`, `ls`, `rm`, `mv`, `cp`, `glob`.
 - Structured data: use `from json|yaml|toml` and `to json|yaml|toml` plus `get`, `select`, `where`, `update`, `merge`.
 - Strings: use `str` subcommands and `parse` before `sed`/`awk`.
-- If an external tool is needed for performance or capability, prefix with `^` and explain why.
+
+## Gotchas
+- Wrap multiline commands in `()` or keep them on one line to avoid argument splitting.
+- Replace `let-env` with `$env.VAR = "value"` or `with-env`.
+- Serialize record bodies with `to json` before `http post|put|patch` (these accept string/binary).
 
 ## Workflow
-1. Identify the input type and expected output type.
-2. Choose pipeline input vs parameters intentionally.
-3. Build the pipeline in small steps and validate intermediate output types.
-4. Add null handling and error paths before finalizing output shape.
+1. Identify expected input and output types.
+2. Choose pipeline input vs parameters and define signatures.
+3. Build in small steps and validate with `describe`.
+4. Add null and error handling.
+5. Provide the minimal final pipeline.
 
 ## References
 - [references/pipeline-and-signatures.md](references/pipeline-and-signatures.md) - Pipeline input vs parameters, type signatures, row conditions, closures.
