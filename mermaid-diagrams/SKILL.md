@@ -193,11 +193,11 @@ flowchart LR
 2. Generate a `.png` with the CLI (file-based).
 
 **File-based:**
-`mmdc -i diagram.mmd -o diagram.png -s 5 -b transparent`
+`mmdc -i diagram.mmd -o diagram.png -s 5`
 
 **Direct creation (stdin):**
 If the user asks to create the diagram directly without writing a file, use stdin. This can be less reliable than file-based usage and may trigger headless Chromium.
-`mmdc -i - -o diagram.png -s 5 -b transparent`
+`mmdc -i - -o diagram.png -s 5`
 
 ## Common Pitfalls
 
@@ -210,6 +210,6 @@ If the user asks to create the diagram directly without writing a file, use stdi
 
 - **Always** create the diagram: write a `.mmd` file and generate a `.png` with the CLI unless the user explicitly asks for Mermaid text only.
 - Use `look: handDrawn` by default in the diagram config.
-- Use `-s 5` and `-b transparent` by default when using the CLI.
+- Use `-s 5` by default when using the CLI.
 - Do not pre-check for CLI presence. Run the command directly; if it errors due to a missing CLI, then prompt installation with: `npm install -g @mermaid-js/mermaid-cli`.
 - Prefer file-based input; only use stdin if explicitly requested.
